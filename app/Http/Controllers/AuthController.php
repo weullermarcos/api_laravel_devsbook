@@ -14,12 +14,46 @@ class AuthController extends Controller
     public function __construct()
     {
         //só descomentar após as rotas abaixo estarem criadas
-//        $this->middleware('auth:api', ['except' => 'login', 'create', 'unauthorized']);
+        $this->middleware('auth:api', ['except' => 'login', 'create', 'unauthorized']);
+    }
+
+    public function unauthorized(){
+
+        return response()->json(['error' => 'nao autorizado'], 401);
+    }
+
+    public function login(Request $request){
+
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        //tenta o login
+        $token = auth()->attempt([
+            'email' => $email,
+            'password' => $password
+        ]);
+
+        if($token)
+            $array['token'] = $token;
+        else
+            $array = ['erro' => 'erro ao realizar login'];
+
+        return $array;
+    }
+
+    public function logout(){
+
+        auth()->logout();
+        return ['error' => ''];
+    }
+
+    public function refresh(){
+
+        $token = auth()->refresh();
+        return ['error' => '', 'token' => $token];
     }
 
     public function create(Request $request){
-
-        $array = ['' => ''];
 
         $name = $request->input('name');
         $password = $request->input('password');
@@ -66,7 +100,6 @@ class AuthController extends Controller
             }
 
             $array['token'] = $token;
-
         }
         else{
 

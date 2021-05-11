@@ -23,11 +23,11 @@ Route::get('/ping', function (){
 });
 
 //rota a ser chamada quando o usuário não está autenticado
-//Route::get('/401', [AuthController::class, 'unauthorized'])->name('login');
-//
-//Route::post('auth/login', [AuthController::class, 'login']);
-//Route::post('auth/logout', [AuthController::class, 'logout'])->name('logout');
-//Route::post('auth/refresh', [AuthController::class], 'refresh')->name('refresh');
+Route::get('/401', [AuthController::class, 'unauthorized']);
+
+Route::post('auth/login', [AuthController::class, 'login']);
+Route::post('auth/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('auth/refresh', [AuthController::class, 'refresh'])->name('refresh');
 
 Route::post('/user', [AuthController::class, 'create'])->name('createUser');
 //Route::put('/user', [UserController::class, 'update'])->name('updateUser');
