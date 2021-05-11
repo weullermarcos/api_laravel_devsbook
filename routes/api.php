@@ -23,30 +23,30 @@ Route::get('/ping', function (){
 });
 
 //rota a ser chamada quando o usuário não está autenticado
-Route::get('/401', [AuthController::class, 'unauthorized'])->name('login');
-
-Route::post('auth/login', [AuthController::class, 'login']);
-Route::post('auth/logout', [AuthController::class, 'logout'])->name('logout');
-Route::post('auth/refresh', [AuthController::class], 'refresh')->name('refresh');
+//Route::get('/401', [AuthController::class, 'unauthorized'])->name('login');
+//
+//Route::post('auth/login', [AuthController::class, 'login']);
+//Route::post('auth/logout', [AuthController::class, 'logout'])->name('logout');
+//Route::post('auth/refresh', [AuthController::class], 'refresh')->name('refresh');
 
 Route::post('/user', [AuthController::class, 'create'])->name('createUser');
-Route::put('/user', [UserController::class, 'update'])->name('updateUser');
-Route::post('/user/avatar', [UserController::class, 'updateAvatar'])->name('updateAvatar');
-Route::post('/user/cover', [UserController::class, 'updateCover'])->name('updateCover');
+//Route::put('/user', [UserController::class, 'update'])->name('updateUser');
+//Route::post('/user/avatar', [UserController::class, 'updateAvatar'])->name('updateAvatar');
+//Route::post('/user/cover', [UserController::class, 'updateCover'])->name('updateCover');
 
-Route::get('/feed', [FeedController::class, 'read'])->name('readFeed');
-Route::get('/user/feed', [FeedController::class, 'userFeed'])->name('userFeed');
-Route::get('/user/{id}/feed', [FeedController::class, 'userFeed'])->name('userFeed');
-
-Route::get('/user', [UserController::class, 'read'])->name('readUser');
-Route::get('/user/{id}', [UserController::class, 'read'])->name('readUser');
-
-Route::post('/feed', [FeedController::class, 'create'])->name('createFeed');
-
-Route::post('/post/{id}/like', [PostController::class, 'like'])->name('like');
-Route::post('/post/{id}/comment', [PostController::class, 'comment'])->name('comment');
-
-Route::get('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('search');
+//Route::get('/feed', [FeedController::class, 'read'])->name('readFeed');
+//Route::get('/user/feed', [FeedController::class, 'userFeed'])->name('userFeed');
+//Route::get('/user/{id}/feed', [FeedController::class, 'userFeed'])->name('userFeed');
+//
+//Route::get('/user', [UserController::class, 'read'])->name('readUser');
+//Route::get('/user/{id}', [UserController::class, 'read'])->name('readUser');
+//
+//Route::post('/feed', [FeedController::class, 'create'])->name('createFeed');
+//
+//Route::post('/post/{id}/like', [PostController::class, 'like'])->name('like');
+//Route::post('/post/{id}/comment', [PostController::class, 'comment'])->name('comment');
+//
+//Route::get('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('search');
 
 
 
