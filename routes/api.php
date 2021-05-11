@@ -30,7 +30,7 @@ Route::post('auth/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('auth/refresh', [AuthController::class, 'refresh'])->name('refresh');
 
 Route::post('/user', [AuthController::class, 'create'])->name('createUser');
-//Route::put('/user', [UserController::class, 'update'])->name('updateUser');
+Route::put('/user', [UserController::class, 'update'])->name('updateUser');
 //Route::post('/user/avatar', [UserController::class, 'updateAvatar'])->name('updateAvatar');
 //Route::post('/user/cover', [UserController::class, 'updateCover'])->name('updateCover');
 
