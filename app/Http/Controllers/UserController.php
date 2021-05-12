@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Image;
 
 class UserController extends Controller
 {
@@ -90,6 +91,49 @@ class UserController extends Controller
         $user->save();
 
         $array['sucesso'] = 'usuario alterado com sucesso';
+        return $array;
+    }
+
+    public function updateAvatar(Request $request){
+
+        //tipos de imagens permitadas
+        $imageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+
+        $image = $request->file('avatar');
+
+        //se a imagem não foi enviada
+        if(! $image){
+
+            $array['error'] = 'imagem nao enviada';
+            return $array;
+        }
+
+        //se o tipo de imagem não é permitido
+        if(! in_array($image->getClientMimeType(), $imageTypes)){
+
+            $array['error'] = 'tipo de imagem nao suportado';
+            return $array;
+        }
+
+        //gerando  um nome aleatório para a imagem
+        $fileName = md5(time().rand(0,99999)) . '.jpg';
+
+        //caminho de onde ficarao os arquivos
+        $destPath = public_path('/media/avatars');
+
+        //gera e salva a imagem
+        $img = Image::make($image->path())
+            ->fit(200,200)
+            ->save($destPath . '/' . $fileName);
+
+        //recuper o usuário logado para salvar o caminho da imagem
+        $user = User::find(Auth::user()->id);
+
+        $user->avatar = $fileName;
+        $user->save();
+
+        //retorna a url do arquivo
+        $array['url'] = url('/media/avatars/' . $fileName);
         return $array;
     }
 
