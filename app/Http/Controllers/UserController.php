@@ -137,4 +137,48 @@ class UserController extends Controller
         return $array;
     }
 
+    public function updateCover(Request $request){
+
+        //tipos de imagens permitadas
+        $imageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+
+        $image = $request->file('cover');
+
+        //se a imagem não foi enviada
+        if(! $image){
+
+            $array['error'] = 'imagem nao enviada';
+            return $array;
+        }
+
+        //se o tipo de imagem não é permitido
+        if(! in_array($image->getClientMimeType(), $imageTypes)){
+
+            $array['error'] = 'tipo de imagem nao suportado';
+            return $array;
+        }
+
+        //gerando  um nome aleatório para a imagem
+        $fileName = md5(time().rand(0,99999)) . '.jpg';
+
+        //caminho de onde ficarao os arquivos
+        $destPath = public_path('/media/covers');
+
+        //gera e salva a imagem
+        $img = Image::make($image->path())
+            ->fit(850,310)
+            ->save($destPath . '/' . $fileName);
+
+        //recuper o usuário logado para salvar o caminho da imagem
+        $user = User::find(Auth::user()->id);
+
+        $user->cover = $fileName;
+        $user->save();
+
+        //retorna a url do arquivo
+        $array['url'] = url('/media/covers/' . $fileName);
+        return $array;
+
+    }
+
 }
