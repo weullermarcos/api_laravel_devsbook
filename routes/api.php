@@ -34,14 +34,14 @@ Route::put('/user', [UserController::class, 'update'])->name('updateUser');
 Route::post('/user/avatar', [UserController::class, 'updateAvatar'])->name('updateAvatar');
 Route::post('/user/cover', [UserController::class, 'updateCover'])->name('updateCover');
 
-//Route::get('/feed', [FeedController::class, 'read'])->name('readFeed');
+Route::get('/feed', [FeedController::class, 'read'])->name('readFeed');
 //Route::get('/user/feed', [FeedController::class, 'userFeed'])->name('userFeed');
 //Route::get('/user/{id}/feed', [FeedController::class, 'userFeed'])->name('userFeed');
 //
 //Route::get('/user', [UserController::class, 'read'])->name('readUser');
 //Route::get('/user/{id}', [UserController::class, 'read'])->name('readUser');
 //
-//Route::post('/feed', [FeedController::class, 'create'])->name('createFeed');
+Route::post('/feed', [FeedController::class, 'create'])->name('createFeed');
 //
 //Route::post('/post/{id}/like', [PostController::class, 'like'])->name('like');
 //Route::post('/post/{id}/comment', [PostController::class, 'comment'])->name('comment');
