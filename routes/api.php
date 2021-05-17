@@ -40,12 +40,12 @@ Route::get('/user/{id}/feed', [FeedController::class, 'userFeed'])->name('userFe
 
 Route::get('/user', [UserController::class, 'read'])->name('readUser');
 Route::get('/user/{id}', [UserController::class, 'read'])->name('readUser');
-//
+
 Route::post('/feed', [FeedController::class, 'create'])->name('createFeed');
-//
-//Route::post('/post/{id}/like', [PostController::class, 'like'])->name('like');
-//Route::post('/post/{id}/comment', [PostController::class, 'comment'])->name('comment');
-//
+
+Route::post('/post/{id}/like', [PostController::class, 'like'])->name('like');
+Route::post('/post/{id}/comment', [PostController::class, 'comment'])->name('comment');
+
 //Route::get('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('search');
 
 
