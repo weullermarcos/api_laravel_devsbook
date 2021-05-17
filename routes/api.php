@@ -38,8 +38,8 @@ Route::get('/feed', [FeedController::class, 'read'])->name('readFeed');
 Route::get('/user/feed', [FeedController::class, 'userFeed'])->name('userFeed');
 Route::get('/user/{id}/feed', [FeedController::class, 'userFeed'])->name('userFeed');
 
-//Route::get('/user', [UserController::class, 'read'])->name('readUser');
-//Route::get('/user/{id}', [UserController::class, 'read'])->name('readUser');
+Route::get('/user', [UserController::class, 'read'])->name('readUser');
+Route::get('/user/{id}', [UserController::class, 'read'])->name('readUser');
 //
 Route::post('/feed', [FeedController::class, 'create'])->name('createFeed');
 //

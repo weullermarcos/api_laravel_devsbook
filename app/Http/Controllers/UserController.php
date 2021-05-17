@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use App\Models\UserRelation;
+use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -179,6 +182,59 @@ class UserController extends Controller
         $array['url'] = url('/media/covers/' . $fileName);
         return $array;
 
+    }
+
+    //faz com que a informação do parametro seja opcional
+    public function read($id = false){
+
+        $me = true;
+
+        //caso não seja informado id o id do meu usuário
+        if(!$id){
+            $id = Auth::user()->id;
+            $me = false;
+        }
+
+        $user = User::find($id);
+
+        //se o usuário nao existir
+        if(!$user){
+            $array['error'] = 'usuario inexistente';
+            return $array;
+        }
+
+        $user['avatar'] = url('media/avatars/' . $user['avatar']);
+        $user['cover'] = url('media/covers/' . $user['cover']);
+
+        //recebe a informação se o usuário sou eu ou não
+        $user['me'] = $me;
+
+        //calculando a idade
+        $dateFrom = new \DateTime($user['birthdate']);
+        $dateTo = new \DateTime('today');
+        $user['age'] = $dateFrom->diff($dateTo)->y;
+
+        //buscando a quantidade de seguidores
+        $user['followers'] = UserRelation::where('user_to', $user['id'])->count();
+
+        //buscando a quantidade de usuarios que eu sigo
+        $user['following'] = UserRelation::where('user_from', $user['id'])->count();
+
+        //buscando a quantidade de fotos
+        $user['photoCount'] = Post::where('id_user', $user['id'])
+            ->where('type', 'photo')
+            ->count();
+
+        //veriica se eu sigo o usuario
+        $hasRelation = UserRelation::where('user_from', Auth::user()->id)
+            ->where('user_to', $user['id'])
+            ->count();
+
+        $user['isFollowing'] = $hasRelation > 0;
+
+        //preencho o array com as informações do usuario
+        $array['data'] = $user;
+        return $array;
     }
 
 }
