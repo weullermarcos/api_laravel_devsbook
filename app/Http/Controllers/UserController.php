@@ -237,4 +237,81 @@ class UserController extends Controller
         return $array;
     }
 
+    public function follow($id){
+
+        if($id == Auth::user()->id){
+
+            $array['error'] = 'usuario nao pode serguir a si mesmo';
+            return $array;
+        }
+
+        $userExists = User::find($id);
+
+        if(!$userExists){
+
+            $array['error'] = 'usuario inexistente';
+            return $array;
+        }
+
+        $relation = UserRelation::where('user_from', Auth::user()->id)
+            ->where('user_to', $id)
+            ->first();
+
+        if($relation){
+
+            //se eu já sigo o usuário eu vou parar de seguir
+            $relation->delete();
+        }
+        else{
+
+            //se não eu começo a seguir:
+            $new = new UserRelation();
+            $new->user_from = Auth::user()->id;
+            $new->user_to = $id;
+            $new->save();
+        }
+
+        $array['error'] = '';
+        return $array;
+    }
+
+    public function followers($id){
+
+        $user = User::find($id);
+
+        //se o usuário nao existir
+        if(!$user){
+            $array['error'] = 'usuario inexistente';
+            return $array;
+        }
+
+        $followers = UserRelation::where('user_to', $id)->get();
+        $following = UserRelation::where('user_from', $id)->get();
+
+        $array['followers'] = [];
+        $array['following'] = [];
+
+        foreach ($followers as $item){
+
+            $newUser = User::find($item['user_from']);
+            $array['followers'][] = [
+                'id'=> $newUser['id'],
+                'name' => $newUser['name'],
+                'avatar' => url('/media/avatars/'. $newUser['avatar'])
+            ];
+        }
+
+        foreach ($following as $item){
+
+            $newUser = User::find($item['user_to']);
+            $array['following'][] = [
+                'id'=> $newUser['id'],
+                'name' => $newUser['name'],
+                'avatar' => url('/media/avatars/'. $newUser['avatar'])
+            ];
+        }
+
+        return $array;
+    }
+
 }
