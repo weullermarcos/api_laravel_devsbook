@@ -225,4 +225,50 @@ class FeedController extends Controller
         return $postList;
     }
 
+
+    public function userPhotos(Request $request, $id = false){
+
+        //caso não venha id eu pego do usuário logado
+        if(!$id){
+            $id = Auth::user()->id;
+        }
+
+        //se vier algo será 1 se não será 0
+        $page = intval($request->input('page'));
+        //configurando 2 itens por página de feed
+        $perPage = 2;
+
+        //pegar as fotos do usuário ordenados pela data
+        $postList = Post::where('id_user', $id)
+            ->where('type', 'photo')
+            ->orderBy('created_at', 'desc')
+            ->offset($page * $perPage)
+            ->limit($perPage)
+            ->get();
+
+        //contando a quantidade de fotos do usuário
+        $total = Post::where('id_user', $id)
+            ->where('type', 'photo')
+            ->count();
+
+        //contando a quantidade de paginas
+        $pageCount = ceil($total / $perPage);
+
+
+        //Recuperar as demais informações do usuario
+        $posts = $this->_postListToObject($postList, Auth::user()->id);
+
+        foreach ($posts as $pkey => $post){
+
+            $posts[$pkey]['body'] = url('/media/avatars/'. $posts[$pkey]['body']);
+        }
+
+        $array['posts'] = $posts;
+        $array['pageCount'] = $pageCount;
+        $array['currentPage'] = $page;
+
+        $array['error'] = '';
+        return $array;
+    }
+
 }

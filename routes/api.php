@@ -36,10 +36,12 @@ Route::post('/user/cover', [UserController::class, 'updateCover'])->name('update
 
 Route::get('/feed', [FeedController::class, 'read'])->name('readFeed');
 Route::get('/user/feed', [FeedController::class, 'userFeed'])->name('userFeed');
+Route::get('/user/photos', [FeedController::class, 'userPhotos']);
+
 Route::get('/user/{id}/feed', [FeedController::class, 'userFeed'])->name('userFeed');
 Route::post('/user/{id}/follow', [UserController::class, 'follow']);
 Route::get('/user/{id}/followers', [UserController::class, 'followers']);
-//Route::get('/user/{id}/photos', [UserController::class, 'photos']);
+Route::get('/user/{id}/photos', [FeedController::class, 'userPhotos']);
 
 Route::get('/user', [UserController::class, 'read'])->name('readUser');
 Route::get('/user/{id}', [UserController::class, 'read'])->name('readUser');
